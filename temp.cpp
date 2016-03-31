@@ -2,6 +2,7 @@
 #include <iostream>
 #include "opencv2/highgui/highgui.hpp"
 #include "opencv2/features2d/features2d.hpp"
+#include "opencv2/nonfree/features2d.hpp"
 
 using namespace cv;
 
@@ -16,7 +17,7 @@ void img1(const std::string& filename) {
   
   Mat out_img;
   drawKeypoints( img, kp, out_img, Scalar(0,255,0) );
-  imshow("ORB1", out_img);
+  imshow("ORB", out_img);
 }
 
 void img2(const std::string& filename) {
@@ -24,15 +25,15 @@ void img2(const std::string& filename) {
   vector<KeyPoint> kp;
   Mat des;
   
-  OrbFeatureDetector detector( 1000 );
+  SurfFeatureDetector detector( 1000 );
   detector.detect( img, kp );
   
-  OrbDescriptorExtractor extractor;
+  SurfDescriptorExtractor extractor;
   extractor.compute( img, kp, des);
   
   Mat out_img;
-  drawKeypoints( img, kp, out_img, Scalar(0,0,255) );
-  imshow("ORB2", out_img);
+  drawKeypoints( img, kp, out_img, Scalar(255,0,0) );
+  imshow("SURF", out_img);
 }
 
 int main() {
