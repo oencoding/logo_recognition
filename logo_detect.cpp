@@ -7,12 +7,12 @@
 
 using namespace cv;
 
-void img1(const std::string& logo_filename, const std::string& img_filename) {
+void LogoDetection(const std::string& logo_filename, const std::string& img_filename) {
   Mat logo = imread( logo_filename, 0 );
   Mat img = imread( img_filename, 0 );
-  Mat copy_img = imread( img_filename);
+  Mat copy_img = imread( img_filename );
   
-  vector<KeyPoint> kpL, kpI;
+  std::vector<KeyPoint> kpL, kpI;
   Mat desL, desI;
   
   ORB orb( 2500 );
@@ -23,16 +23,15 @@ void img1(const std::string& logo_filename, const std::string& img_filename) {
   orb.detect( img, kpI );
   orb.compute( img, kpI, desI );
   
-  FlannBasedMatcher matcher(new flann::LshIndexParams(20,10,2));
+  FlannBasedMatcher matcher( new flann::LshIndexParams(20,10,2) );
   std::vector< DMatch > matches;
-  matcher.match(desL, desI, matches);
+  matcher.match( desL, desI, matches );
   
-  double max_dist = 0; double min_dist = 100;
+  double min_dist = 100;
   
   for( int i = 0; i < desL.rows; i++ )
   { double dist = matches[i].distance;
     if( dist < min_dist ) min_dist = dist;
-    if( dist > max_dist ) max_dist = dist;
   }
   
   std::vector< DMatch > good_matches;
@@ -70,7 +69,7 @@ void img1(const std::string& logo_filename, const std::string& img_filename) {
 
 
 int main() {
-  img1("chupa.jpg","chupa_chups-gigante08.jpg");
+  LogoDetection("chupa.jpg","chupa_chups-gigante08.jpg");
   
   waitKey(0);
   return 0;
