@@ -2,6 +2,7 @@
 #include <iostream>
 #include "opencv2/highgui/highgui.hpp"
 #include "opencv2/features2d/features2d.hpp"
+#include "opencv2/calib3d/calib3d.hpp"
 
 using namespace cv;
 
@@ -52,7 +53,20 @@ void img1(const std::string& logo_filename, const std::string& img_filename) {
     pts_logo.push_back( kpL[ good_matches[i].queryIdx ].pt );
     pts_img.push_back( kpI[ good_matches[i].trainIdx ].pt );
   }
+  
+  Mat H = findHomography( pts_logo, pts_img, CV_RANSAC );
 
+  std::vector<Point2f> logo_corners(4);
+  logo_corners[0] = cvPoint(0,0); logo_corners[1] = cvPoint( logo.cols, 0 );
+  logo_corners[2] = cvPoint( logo.cols, logo.rows ); logo_corners[3] = cvPoint( 0, logo.rows );
+  
+  std::vector<Point2f> img_corners(4);
+  perspectiveTransform( logo_corners, img_corners, H);
+  
+  line( img_matches, img_corners[0] + Point2f( logo.cols, 0), img_corners[1] + Point2f( logo.cols, 0), Scalar( 0, 255, 0), 4 );
+  line( img_matches, img_corners[1] + Point2f( logo.cols, 0), img_corners[2] + Point2f( logo.cols, 0), Scalar( 0, 255, 0), 4 );
+  line( img_matches, img_corners[2] + Point2f( logo.cols, 0), img_corners[3] + Point2f( logo.cols, 0), Scalar( 0, 255, 0), 4 );
+  line( img_matches, img_corners[3] + Point2f( logo.cols, 0), img_corners[0] + Point2f( logo.cols, 0), Scalar( 0, 255, 0), 4 );
   
   imshow( "Good Matches", img_matches );
   
@@ -64,7 +78,7 @@ void img1(const std::string& logo_filename, const std::string& img_filename) {
 
 
 int main() {
-  img1("Coca-Cola-Logo.jpg","brit00611.jpg");
+  img1("chupa.jpg","chupa_chups-gigante08.jpg");
   
   waitKey(0);
   return 0;
