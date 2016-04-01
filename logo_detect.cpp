@@ -3,17 +3,19 @@
 #include "opencv2/highgui/highgui.hpp"
 #include "opencv2/features2d/features2d.hpp"
 #include "opencv2/calib3d/calib3d.hpp"
+#include "opencv2/imgproc/imgproc.hpp"
 
 using namespace cv;
 
 void img1(const std::string& logo_filename, const std::string& img_filename) {
   Mat logo = imread( logo_filename, 0 );
   Mat img = imread( img_filename, 0 );
+  Mat copy_img = imread( img_filename);
   
   vector<KeyPoint> kpL, kpI;
   Mat desL, desI;
   
-  ORB orb( 1000 );
+  ORB orb( 2500 );
   
   orb.detect( logo, kpL );
   orb.compute( logo, kpL, desL );
@@ -39,11 +41,6 @@ void img1(const std::string& logo_filename, const std::string& img_filename) {
   { if( matches[i].distance <= max(2*min_dist, 0.02) )
     { good_matches.push_back( matches[i]); }
   }
-  
-  Mat img_matches;
-  drawMatches( logo, kpL, img, kpI,
-               good_matches, img_matches, Scalar::all(-1), Scalar::all(-1),
-               vector<char>(), DrawMatchesFlags::NOT_DRAW_SINGLE_POINTS );
                
   std::vector<Point2f> pts_logo;
   std::vector<Point2f> pts_img;
@@ -63,17 +60,12 @@ void img1(const std::string& logo_filename, const std::string& img_filename) {
   std::vector<Point2f> img_corners(4);
   perspectiveTransform( logo_corners, img_corners, H);
   
-  line( img_matches, img_corners[0] + Point2f( logo.cols, 0), img_corners[1] + Point2f( logo.cols, 0), Scalar( 0, 255, 0), 4 );
-  line( img_matches, img_corners[1] + Point2f( logo.cols, 0), img_corners[2] + Point2f( logo.cols, 0), Scalar( 0, 255, 0), 4 );
-  line( img_matches, img_corners[2] + Point2f( logo.cols, 0), img_corners[3] + Point2f( logo.cols, 0), Scalar( 0, 255, 0), 4 );
-  line( img_matches, img_corners[3] + Point2f( logo.cols, 0), img_corners[0] + Point2f( logo.cols, 0), Scalar( 0, 255, 0), 4 );
+  line( copy_img, img_corners[0], img_corners[1], Scalar( 0, 255, 0), 4 );
+  line( copy_img, img_corners[1], img_corners[2], Scalar( 0, 255, 0), 4 );
+  line( copy_img, img_corners[2], img_corners[3], Scalar( 0, 255, 0), 4 );
+  line( copy_img, img_corners[3], img_corners[0], Scalar( 0, 255, 0), 4 );
   
-  imshow( "Good Matches", img_matches );
-  
-  drawKeypoints( img, kpI, img, Scalar(0,255,0) );
-  drawKeypoints( logo, kpL, logo, Scalar(0,255,0) );
-  //imshow("img", img);
-  //imshow("logo", logo);
+  imwrite( img_filename, copy_img );
 }
 
 
