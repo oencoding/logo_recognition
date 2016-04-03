@@ -18,3 +18,5 @@ SOURCES += main.cpp\
 HEADERS  += logo_detect.h
 
 FORMS    += logo_detect.ui
+INCLUDEPATH += C:/opencv/build/install/include
+LIBS += "C:/opencv/build/bin/*.dll"
