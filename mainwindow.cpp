@@ -6,6 +6,10 @@
 #include "opencv2/features2d/features2d.hpp"
 #include "opencv2/calib3d/calib3d.hpp"
 #include "opencv2/imgproc/imgproc.hpp"
+#include <QFileDialog>
+#include <QString>
+#include <QDir>
+#include <QStringList>
 
 using namespace cv;
 
@@ -82,10 +86,44 @@ void MainWindow::LogoDetection(const std::string& logo_filename, const std::stri
   imwrite( img_filename, copy_img );
 }
 
-std::vector<std::string> MainWindow::GetListOfFiles(const std::string& logo_dir, const std::string& img_dir) {
-    std::vector<std::string> lof;
-
+QStringList MainWindow::GetListOfFiles(QDir dir) {
+    QStringList lof;
+    QStringList file_filter;
+    file_filter << "*.png" << "*.jpg" << "*.gif";
+    lof = dir.entryList(file_filter, QDir::Files);
     return lof;
 }
 
+void MainWindow::on_pushButton_clicked()
+{
+  QStringList logo_files = this->GetListOfFiles(this->logo_dir);
+  QStringList img_files = this->GetListOfFiles(this->img_dir);
 
+}
+
+void MainWindow::on_img_dir_bt_clicked()
+{
+  QString id = this->BtClick();
+  this->ui->img_dir_le->setText(id);
+  if (!id.isEmpty())
+    this->logo_dir.setPath(id);
+}
+
+void MainWindow::on_logo_dir_bt_clicked()
+{
+  QString ld = this->BtClick();
+  this->ui->logo_dir_le->setText(ld);
+  if (!ld.isEmpty())
+    this->logo_dir.setPath(ld);
+}
+
+QString MainWindow::BtClick() {
+  QFileDialog qfd;
+  qfd.setFileMode(QFileDialog::DirectoryOnly);
+  qfd.setOption(QFileDialog::ShowDirsOnly);
+  QString path_dir = QFileDialog::getExistingDirectory(
+              this,
+              tr("Select Directory"),
+              "C:\\");
+  return  path_dir;
+}

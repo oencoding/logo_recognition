@@ -6,26 +6,67 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>179</width>
-    <height>208</height>
+    <width>197</width>
+    <height>210</height>
    </rect>
+  </property>
+  <property name="minimumSize">
+   <size>
+    <width>197</width>
+    <height>210</height>
+   </size>
+  </property>
+  <property name="maximumSize">
+   <size>
+    <width>197</width>
+    <height>210</height>
+   </size>
   </property>
   <property name="windowTitle">
    <string>MainWindow</string>
   </property>
   <widget class="QWidget" name="centralWidget">
-   <widget class="QPushButton" name="pushButton">
+   <widget class="QWidget" name="verticalLayoutWidget">
     <property name="geometry">
      <rect>
-      <x>50</x>
-      <y>100</y>
-      <width>75</width>
-      <height>23</height>
+      <x>10</x>
+      <y>0</y>
+      <width>177</width>
+      <height>151</height>
      </rect>
     </property>
-    <property name="text">
-     <string>Распознать</string>
-    </property>
+    <layout class="QVBoxLayout" name="verticalLayout">
+     <item>
+      <widget class="QPushButton" name="logo_dir_bt">
+       <property name="text">
+        <string>Выбрать папку с логотипами</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QLineEdit" name="logo_dir_le"/>
+     </item>
+     <item>
+      <widget class="QPushButton" name="img_dir_bt">
+       <property name="text">
+        <string>Выбрать папку с изображениями</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QLineEdit" name="img_dir_le"/>
+     </item>
+     <item>
+      <widget class="QPushButton" name="pushButton">
+       <property name="enabled">
+        <bool>false</bool>
+       </property>
+       <property name="text">
+        <string>Распознать</string>
+       </property>
+      </widget>
+     </item>
+    </layout>
    </widget>
   </widget>
   <widget class="QMenuBar" name="menuBar">
@@ -33,7 +74,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>179</width>
+     <width>197</width>
      <height>21</height>
     </rect>
    </property>
