@@ -4,8 +4,10 @@
 #include "opencv2/features2d/features2d.hpp"
 #include "opencv2/calib3d/calib3d.hpp"
 #include "opencv2/imgproc/imgproc.hpp"
+#include "boost/filesystem.hpp"
 
 using namespace cv;
+namespace fs = boost::filesystem;
 
 void LogoDetection(const std::string& logo_filename, const std::string& img_filename) {
   Mat logo = imread( logo_filename, 0 );
@@ -67,11 +69,15 @@ void LogoDetection(const std::string& logo_filename, const std::string& img_file
   imwrite( img_filename, copy_img );
 }
 
-
+std::vector<string> GetListOfFiles(const std::string& logo_dir, const std::string& img_dir) {
+    std::vector<string> list_of_files;
+    std::cout << logo_dir << img_dir << std::endl;
+    return list_of_files;
+}
 
 int main() {
   LogoDetection("chupa.jpg","chupa_chups-gigante08.jpg");
-
+  std::vector<string> list_of_files = GetListOfFiles("C:\\Users\\Natalia\\Desktop\\mnt\\DataSet_pic\\reference", "C:\\Users\\Natalia\\Desktop\\mnt\\DataSet_pic");
   waitKey(0);
   return 0;
 }
