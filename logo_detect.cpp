@@ -54,19 +54,20 @@ void logo_detect::on_pushButton_clicked()
         std::string ld = this->logo_dir.path().toStdString();
 
         for (int i = 0; i < img_files.size(); ++i) {
-            for (int j = 0; j < logo_files.size(); ++j)
-                this->LogoDetection(ld + "/" + logo_files.at(j).toStdString(), id + "/" + img_files.at(i).toStdString());
-
             std::string image_file = img_files.at(i).toStdString();
             std::cout << image_file << std::endl;
+            Mat copy_img;
+            for (int j = 0; j < logo_files.size(); ++j)
+                copy_img = this->LogoDetection(ld + "/" + logo_files.at(j).toStdString(), id + "/" + image_file);
+            imwrite( id + "/" + image_file, copy_img );
         }
     }
 }
 
-void logo_detect::LogoDetection(const std::string& logo_filename, const std::string& img_filename) {
+Mat logo_detect::LogoDetection(const std::string& logo_filename, const std::string& img_filename) {
     Mat logo = imread( logo_filename, 0 );
     Mat img = imread( img_filename, 0 );
-    Mat copy_img = imread( img_filename );
+    Mat copy_img = imread (img_filename);
 
     std::vector<KeyPoint> kpL, kpI;
     Mat desL, desI;
@@ -126,9 +127,8 @@ void logo_detect::LogoDetection(const std::string& logo_filename, const std::str
         line( copy_img, img_corners[1], img_corners[2], Scalar( 0, 255, 0), 4 );
         line( copy_img, img_corners[2], img_corners[3], Scalar( 0, 255, 0), 4 );
         line( copy_img, img_corners[3], img_corners[0], Scalar( 0, 255, 0), 4 );
-
-        imwrite( img_filename, copy_img );
     }
+    return copy_img;
 }
 
 QStringList logo_detect::GetListOfFiles(QDir dir) {
