@@ -6,10 +6,6 @@
 #include <QDir>
 #include <QStringList>
 
-#include "opencv2/highgui/highgui.hpp"
-
-using namespace cv;
-
 namespace Ui {
 class logo_detect;
 }
@@ -23,7 +19,7 @@ public:
     ~logo_detect();
     QDir logo_dir;
     QDir img_dir;
-    Mat LogoDetection(const std::string& logo_filename, const std::string& img_filename);
+    void LogoDetection(const std::string& logo_filename, const std::string& img_filename);
     QStringList GetListOfFiles(QDir dir);
     QString BtClick();
 

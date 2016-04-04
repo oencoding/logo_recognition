@@ -50,21 +50,22 @@ void logo_detect::on_pushButton_clicked()
         QStringList logo_files = this->GetListOfFiles(this->logo_dir);
         QStringList img_files = this->GetListOfFiles(this->img_dir);
 
-        std::string id = this->img_dir.path().toStdString();
-        std::string ld = this->logo_dir.path().toStdString();
+        std::string id = this->img_dir.path().toLocal8Bit().toStdString();
+        std::string ld = this->logo_dir.path().toLocal8Bit().toStdString();
+        std::cout << id << std::endl;
+        std::cout << ld << std::endl;
 
         for (int i = 0; i < img_files.size(); ++i) {
-            std::string image_file = img_files.at(i).toStdString();
+            std::string image_file = img_files.at(i).toLocal8Bit().toStdString();
             std::cout << image_file << std::endl;
             Mat copy_img;
             for (int j = 0; j < logo_files.size(); ++j)
-                copy_img = this->LogoDetection(ld + "/" + logo_files.at(j).toStdString(), id + "/" + image_file);
-            imwrite( id + "/" + image_file, copy_img );
+                this->LogoDetection(ld + "/" + logo_files.at(j).toLocal8Bit().toStdString(), id + "/" + image_file);
         }
     }
 }
 
-Mat logo_detect::LogoDetection(const std::string& logo_filename, const std::string& img_filename) {
+void logo_detect::LogoDetection(const std::string& logo_filename, const std::string& img_filename) {
     Mat logo = imread( logo_filename, 0 );
     Mat img = imread( img_filename, 0 );
     Mat copy_img = imread (img_filename);
@@ -79,7 +80,7 @@ Mat logo_detect::LogoDetection(const std::string& logo_filename, const std::stri
 
 //    orb.detect( img, kpI );
 //    orb.compute( img, kpI, desI );
-    SurfFeatureDetector detector( 1000 );
+    SurfFeatureDetector detector( 2000 );
     detector.detect(logo, kpL);
     detector.detect(img, kpI);
 
@@ -114,7 +115,7 @@ Mat logo_detect::LogoDetection(const std::string& logo_filename, const std::stri
         pts_img.push_back( kpI[ good_matches[i].trainIdx ].pt );
     }
 
-    if(good_matches.size() >= 4) {
+    if(good_matches.size() >= 10) {
         Mat H = findHomography( pts_logo, pts_img, CV_RANSAC );
 
         std::vector<Point2f> logo_corners(4);
@@ -127,15 +128,15 @@ Mat logo_detect::LogoDetection(const std::string& logo_filename, const std::stri
         line( copy_img, img_corners[1], img_corners[2], Scalar( 0, 255, 0), 4 );
         line( copy_img, img_corners[2], img_corners[3], Scalar( 0, 255, 0), 4 );
         line( copy_img, img_corners[3], img_corners[0], Scalar( 0, 255, 0), 4 );
+        imwrite( img_filename, copy_img );
     }
-    return copy_img;
 }
 
 QStringList logo_detect::GetListOfFiles(QDir dir) {
     QStringList lof;
     QStringList file_filter;
 
-    file_filter << "*.png" << "*.jpg";
+    file_filter << "*.png" << "*.jpg" << "*.jpeg";
     lof = dir.entryList(file_filter, QDir::Files);
 
     return lof;
@@ -151,5 +152,6 @@ QString logo_detect::BtClick() {
               this,
               tr("Select Directory"),
               "C:\\");
+  path_dir.toLocal8Bit();
   return  path_dir;
 }
