@@ -47,8 +47,10 @@ void logo_detect::on_pushButton_clicked()
     if (!this->logo_dir.path().isEmpty() && !this->img_dir.path().isEmpty()) {
         QStringList logo_files = this->GetListOfFiles(this->logo_dir);
         QStringList img_files = this->GetListOfFiles(this->img_dir);
+
         std::string id = this->img_dir.path().toStdString();
         std::string ld = this->logo_dir.path().toStdString();
+
         for (int i = 0; i < img_files.size(); ++i) {
             for (int j = 0; j < logo_files.size(); ++j)
                 this->LogoDetection(ld + "/" + logo_files.at(j).toStdString(), id + "/" + img_files.at(i).toStdString());
@@ -64,7 +66,7 @@ void logo_detect::LogoDetection(const std::string& logo_filename, const std::str
     std::vector<KeyPoint> kpL, kpI;
     Mat desL, desI;
 
-    ORB orb( 5000 );
+    ORB orb( 2500 );
 
     orb.detect( logo, kpL );
     orb.compute( logo, kpL, desL );
@@ -112,23 +114,27 @@ void logo_detect::LogoDetection(const std::string& logo_filename, const std::str
         line( copy_img, img_corners[1], img_corners[2], Scalar( 0, 255, 0), 4 );
         line( copy_img, img_corners[2], img_corners[3], Scalar( 0, 255, 0), 4 );
         line( copy_img, img_corners[3], img_corners[0], Scalar( 0, 255, 0), 4 );
-    }
 
-    imwrite( img_filename, copy_img );
+        imwrite( img_filename, copy_img );
+    }
 }
 
 QStringList logo_detect::GetListOfFiles(QDir dir) {
     QStringList lof;
     QStringList file_filter;
+
     file_filter << "*.png" << "*.jpg" << "*.gif";
     lof = dir.entryList(file_filter, QDir::Files);
+
     return lof;
 }
 
 QString logo_detect::BtClick() {
   QFileDialog qfd;
+
   qfd.setFileMode(QFileDialog::DirectoryOnly);
   qfd.setOption(QFileDialog::ShowDirsOnly);
+
   QString path_dir = QFileDialog::getExistingDirectory(
               this,
               tr("Select Directory"),
