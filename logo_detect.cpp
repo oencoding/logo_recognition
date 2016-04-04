@@ -6,6 +6,8 @@
 #include "opencv2/features2d/features2d.hpp"
 #include "opencv2/calib3d/calib3d.hpp"
 #include "opencv2/imgproc/imgproc.hpp"
+#include "opencv2/nonfree/nonfree.hpp"
+
 #include <QFileDialog>
 #include <QString>
 #include <QDir>
@@ -66,15 +68,22 @@ void logo_detect::LogoDetection(const std::string& logo_filename, const std::str
     std::vector<KeyPoint> kpL, kpI;
     Mat desL, desI;
 
-    ORB orb( 2500 );
+//    ORB orb( 2500 );
 
-    orb.detect( logo, kpL );
-    orb.compute( logo, kpL, desL );
+//    orb.detect( logo, kpL );
+//    orb.compute( logo, kpL, desL );
 
-    orb.detect( img, kpI );
-    orb.compute( img, kpI, desI );
+//    orb.detect( img, kpI );
+//    orb.compute( img, kpI, desI );
+    SurfFeatureDetector detector( 2500 );
+    detector.detect(logo, kpL);
+    detector.detect(img, kpI);
 
-    FlannBasedMatcher matcher( new flann::LshIndexParams(20,10,2) );
+    SurfDescriptorExtractor extractor;
+    extractor.compute(logo, kpL, desL);
+    extractor.compute(img, kpI, desI);
+
+    FlannBasedMatcher matcher;//( new flann::LshIndexParams(30,20,2) );
     std::vector< DMatch > matches;
     matcher.match( desL, desI, matches );
 
