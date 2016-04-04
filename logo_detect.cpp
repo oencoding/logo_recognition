@@ -56,6 +56,9 @@ void logo_detect::on_pushButton_clicked()
         for (int i = 0; i < img_files.size(); ++i) {
             for (int j = 0; j < logo_files.size(); ++j)
                 this->LogoDetection(ld + "/" + logo_files.at(j).toStdString(), id + "/" + img_files.at(i).toStdString());
+
+            std::string image_file = img_files.at(i).toStdString();
+            std::cout << image_file << std::endl;
         }
     }
 }
@@ -75,7 +78,7 @@ void logo_detect::LogoDetection(const std::string& logo_filename, const std::str
 
 //    orb.detect( img, kpI );
 //    orb.compute( img, kpI, desI );
-    SurfFeatureDetector detector( 2500 );
+    SurfFeatureDetector detector( 1000 );
     detector.detect(logo, kpL);
     detector.detect(img, kpI);
 
@@ -132,7 +135,7 @@ QStringList logo_detect::GetListOfFiles(QDir dir) {
     QStringList lof;
     QStringList file_filter;
 
-    file_filter << "*.png" << "*.jpg" << "*.gif";
+    file_filter << "*.png" << "*.jpg";
     lof = dir.entryList(file_filter, QDir::Files);
 
     return lof;
