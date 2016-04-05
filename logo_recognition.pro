@@ -19,7 +19,7 @@ HEADERS  += logo_detect.h
 
 FORMS    += logo_detect.ui
 INCLUDEPATH += C:/opencv/build/install/include
-LIBS += -LC:\\opencv\\build\\bin \
+LIBS += -LC:\\opencv\\build\\lib \
     libopencv_core2412d \
     libopencv_highgui2412d \
     libopencv_features2d2412d \

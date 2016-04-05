@@ -65,6 +65,7 @@ void logo_detect::on_pushButton_clicked()
             for (int j = 0; j < logo_files.size(); ++j)
                 this->LogoDetection(ld + "/" + logo_files.at(j).toLocal8Bit().toStdString(), id + "/" + image_file);
         }
+        this->ui->status_label->setText(QString(tr("Распознавание закончено")));
     }
 }
 
@@ -76,13 +77,6 @@ void logo_detect::LogoDetection(const std::string& logo_filename, const std::str
     std::vector<KeyPoint> kpL, kpI;
     Mat desL, desI;
 
-//    ORB orb( 2500 );
-
-//    orb.detect( logo, kpL );
-//    orb.compute( logo, kpL, desL );
-
-//    orb.detect( img, kpI );
-//    orb.compute( img, kpI, desI );
     SurfFeatureDetector detector( 2000 );
     detector.detect(logo, kpL);
     detector.detect(img, kpI);
