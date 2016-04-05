@@ -55,12 +55,11 @@ void logo_detect::on_pushButton_clicked()
 
         std::string id = this->img_dir.path().toLocal8Bit().toStdString();
         std::string ld = this->logo_dir.path().toLocal8Bit().toStdString();
-        std::cout << id << std::endl;
-        std::cout << ld << std::endl;
 
         for (int i = 0; i < img_files.size(); ++i) {
             std::string image_file = img_files.at(i).toLocal8Bit().toStdString();
-            std::cout << image_file << std::endl;
+            this->ui->now_recognize->setText(QString(tr(image_file.c_str())));
+
             Mat copy_img;
             for (int j = 0; j < logo_files.size(); ++j)
                 this->LogoDetection(ld + "/" + logo_files.at(j).toLocal8Bit().toStdString(), id + "/" + image_file);
