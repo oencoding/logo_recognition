@@ -77,7 +77,7 @@ void logo_detect::LogoDetection(const std::string& logo_filename, const std::str
     std::vector<KeyPoint> kpL, kpI;
     Mat desL, desI;
 
-    SurfFeatureDetector detector( 2000 );
+    SurfFeatureDetector detector( 2500 );
     detector.detect(logo, kpL);
     detector.detect(img, kpI);
 
