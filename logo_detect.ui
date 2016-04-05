@@ -32,7 +32,7 @@
       <x>10</x>
       <y>0</y>
       <width>181</width>
-      <height>173</height>
+      <height>161</height>
      </rect>
     </property>
     <layout class="QVBoxLayout" name="verticalLayout">
@@ -68,13 +68,6 @@
       <widget class="QPushButton" name="pushButton">
        <property name="text">
         <string>Распознать</string>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <widget class="QLabel" name="now_recognize">
-       <property name="text">
-        <string/>
        </property>
       </widget>
      </item>
