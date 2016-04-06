@@ -72,13 +72,6 @@
       </widget>
      </item>
      <item>
-      <widget class="QLabel" name="now_recognize">
-       <property name="text">
-        <string/>
-       </property>
-      </widget>
-     </item>
-     <item>
       <widget class="QLabel" name="status_label">
        <property name="text">
         <string/>
