@@ -63,7 +63,6 @@ void logo_detect::on_pushButton_clicked()
             for (int j = 0; j < logo_files.size(); ++j)
                 this->LogoDetection(ld + "/" + logo_files.at(j).toLocal8Bit().toStdString(), id + "/" + image_file);
         }
-        this->ui->status_label->setText(QString(tr("Распознавание закончено")));
     }
 }
 
